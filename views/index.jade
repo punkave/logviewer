@@ -1,0 +1,14 @@
+extends layout
+
+block content
+	h1= title
+	pre#log
+	script
+		var socket = io.connect('http://localhost:3000');
+		var logPre = document.getElementById('log');
+		socket.on('message', function (data) {
+			logPre.innerHTML = data;
+		});
+		socket.on('addLog', function (data) {
+			logPre.innerHTML += data;
+		});
