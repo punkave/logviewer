@@ -67,7 +67,7 @@ io.on('connection', function(client){
 });
 
 function checkFile(){
-  console.log('test');
+  // console.log('test');
   if (Object.keys(io.sockets.sockets).length > 0){
     var stats = fs.statSync(filename);
     if (stats.size > prevSize){
