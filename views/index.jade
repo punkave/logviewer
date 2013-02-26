@@ -2,13 +2,23 @@ extends layout
 
 block content
 	h1= title
+	pre#notice
 	pre#log
 	script
 		var socket = io.connect('http://localhost:3000');
 		var logPre = document.getElementById('log');
+		var noticePre = document.getElementById('notice');
+		var errorRegex = /^([A-z]+ [\d]+ [\d]+:[\d]+:[\d]+).*(Error).*$/im;
+
 		socket.on('message', function (data) {
+			data = data.replace(/(Error)/gim, '<span class="error-highlight">$1</span>');
 			logPre.innerHTML = data;
 		});
 		socket.on('addLog', function (data) {
+			if (errorRegex.test(data)) {
+				data = data.replace(/(Error)/gim, '<span class="error-highlight">$1</span>');
+				noticePre.innerHTML += 'Error logged on <span class="notice-date">'+errorRegex.exec(data)[1]+"</span>\n";
+			}
+
 			logPre.innerHTML += data;
 		});
